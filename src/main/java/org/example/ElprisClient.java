@@ -17,10 +17,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Client for fetching and analyzing electricity price data from the Swedish electricity price API.
- * Provides methods for retrieving hourly prices, calculating statistics, and finding optimal charging times.
- */
+
 public class ElprisClient {
 
     private static final DateTimeFormatter TIME_WITH_OFFSET_FORMATTER =
@@ -28,23 +25,11 @@ public class ElprisClient {
 
     private final ObjectMapper objectMapper;
 
-    /**
-     * Constructs a new ElprisClient with a configured Jackson ObjectMapper for JSON processing.
-     */
+    
     public ElprisClient(){
         this.objectMapper = new ObjectMapper();
     }
 
-    /**
-     * Läser elpriser från lokal fil cache. Om filen saknas, hämtas data via live
-     * nätverksanrop mot API:et och sparas direkt ner lokalt.
-     *
-     * @param date the date for which to fetch electricity prices
-     * @param region the Swedish electricity region code (e.g., SE1, SE2, SE3, SE4)
-     * @return list of hourly electricity prices for the specified date and region
-     * @throws IOException if there is an error reading from cache or network
-     * @throws ElprisNotFoundException if no price data is available for the specified date and region
-     */
     public List<Elpris> hamtaElprisLista(LocalDate date, String region)
             throws IOException, ElprisNotFoundException {
 
@@ -94,13 +79,6 @@ public class ElprisClient {
         return hourlyPrices;
     }
 
-    /**
-     * Displays daily electricity price statistics including minimum, maximum, and average prices.
-     * Prints formatted output to the console with prices in öre/kWh.
-     *
-     * @param prisPerTimma list of hourly electricity prices for the day
-     * @param region the electricity region code for display purposes
-     */
     public void visaDagligStatistik(List<Elpris> prisPerTimma, String region) {
         double totalSum = 0;
         double minPris = prisPerTimma.get(0).sekPerKwh();
@@ -126,13 +104,6 @@ public class ElprisClient {
         System.out.printf("Medelpris:   %.2f öre/kWh%n", averageSek * 100);
     }
 
-    /**
-     * Finds and displays the optimal 4-hour continuous charging window with the lowest average price.
-     * Uses a sliding window algorithm to identify the cheapest consecutive 4-hour period.
-     * Prints the start time and average price during the charging window to the console.
-     *
-     * @param hourlyPrices list of hourly electricity prices for the day
-     */
     // Implementera en algoritm (t.ex. Sliding Window) som hittar de 4 sammanhängande timmar på dygnet som har lägst totalpris/medelpris.
     public void visaBastaLaddningstid(List<Elpris> hourlyPrices) {
         int bastaStartTimmaIndex = 0;
@@ -159,12 +130,7 @@ public class ElprisClient {
         System.out.printf("Medelpris under laddning: %.2f öre/kWh%n", best4HourAverageOre);
     }
 
-    /**
-     * Displays hourly electricity prices sorted from lowest to highest.
-     * Shows each hour's time range and corresponding price in öre/kWh.
-     *
-     * @param hourlyPrices list of hourly electricity prices to sort and display
-     */
+   
     public void visaTimmarSorteradeEfterPris(List<Elpris> hourlyPrices) {
         System.out.println("\n*** Timmar Sorterade Efter Pris  ***");
         List<Elpris> sorteradeTimmar = new ArrayList<>(hourlyPrices);
