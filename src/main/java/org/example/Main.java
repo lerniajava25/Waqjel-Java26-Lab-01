@@ -3,7 +3,17 @@ package org.example;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Main entry point for the electricity price analysis tool application.
+ * Provides an interactive menu for analyzing electricity prices across Swedish regions.
+ */
 public class Main {
+    /**
+     * Application entry point that runs an interactive menu for electricity price analysis.
+     * Allows users to select regions, view statistics, sort prices, and find optimal charging times.
+     *
+     * @param args command line arguments (not used)
+     */
     public static void main(String[] args) {
 
         ElprisClient client = new ElprisClient();
