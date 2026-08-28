@@ -23,7 +23,9 @@ import java.util.List;
  */
 public class ElprisClient {
 
-    private static final DateTimeFormatter TIME_WITH_OFFSET = DateTimeFormatter.ofPattern("HH:mm XXX");
+    private static final DateTimeFormatter TIME_WITH_OFFSET_FORMATTER =
+            DateTimeFormatter.ofPattern("HH:mmXXX");
+
     private final ObjectMapper objectMapper;
 
     /**
@@ -148,12 +150,12 @@ public class ElprisClient {
             }
         }
 
-        String timeStartStr = hourlyPrices.get(bastaStartTimmaIndex).timeStart();
-        ZonedDateTime basta4hStartTid = ZonedDateTime.parse(timeStartStr);
+        String basta4hStartTid = ZonedDateTime.parse(hourlyPrices.get(bastaStartTimmaIndex).timeStart())
+                .format(TIME_WITH_OFFSET_FORMATTER);
         double best4HourAverageOre = (biligastFyraTimmarSumman / 4.0) * 100;
 
         System.out.println("\n*** Bästa laddningstid (4h sammanhängande) ***");
-        System.out.printf("Börja ladda kl: %s%n", basta4hStartTid.format(TIME_WITH_OFFSET));
+        System.out.printf("Börja ladda kl: %s%n", basta4hStartTid);
         System.out.printf("Medelpris under laddning: %.2f öre/kWh%n", best4HourAverageOre);
     }
 
@@ -169,11 +171,10 @@ public class ElprisClient {
         sorteradeTimmar.sort(Comparator.comparingDouble(Elpris::sekPerKwh));
 
         for (Elpris currentHour : sorteradeTimmar) {
-            ZonedDateTime timeStart = ZonedDateTime.parse(currentHour.timeStart());
-            ZonedDateTime timeEnd = ZonedDateTime.parse(currentHour.timeEnd());
+            String timeStart = ZonedDateTime.parse(currentHour.timeStart()).format(TIME_WITH_OFFSET_FORMATTER);
+            String timeEnd = ZonedDateTime.parse(currentHour.timeEnd()).format(TIME_WITH_OFFSET_FORMATTER);
             double priceInOre = currentHour.sekPerKwh() * 100;
-            System.out.printf("%s-%s: %.2f öre/kWh%n",
-                    timeStart.format(TIME_WITH_OFFSET), timeEnd.format(TIME_WITH_OFFSET), priceInOre);
+            System.out.printf("%s-%s: %.2f öre/kWh%n", timeStart, timeEnd, priceInOre);
         }
     }
 }
