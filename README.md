@@ -7,7 +7,7 @@ För att hämta elpriserna i realtid ansluter applikationen till det öppna och 
 [Java URL Connection Documentation](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/net/URLConnection.html)
 
 ## JSON-hantering och datamappning
-När JSON-datan har tagits emot som en textström omvandlas den till strängkontext med hjälp av **java.nio.charset.StandardCharsets.UTF_8**. För att parsa (analysera) denna råa textsträng till typ-säkra Java-objekt används det externa open-source-biblioteket **FasterXML Jackson** Databind via klasserna **ObjectMapper** och **TypeReference**. Eftersom Java Records är immutabla använder Jackson intern reflektion i kombination med annoteringen **@JsonProperty** för att mappa JSON-nycklar som **SEK_per_kWh** direkt till fält i din Elpris-record.
+När JSON-datan har tagits emot som en textström omvandlas den till strängkontext med hjälp av **java.nio.charset.StandardCharsets.UTF_8**. För att parsa (analysera) denna råa textsträng till typ-säkra Java-objekt används det externa open-source-biblioteket **FasterXML Jackson** Databind via klasserna **ObjectMapper** och **TypeReference**. Eftersom Java Records är immutabla använder Jackson intern reflektion i kombination med annoteringen **@JsonProperty** för att mappa JSON-nycklar som **SEK_per_kWh** direkt till fält i den Elpris-record.
 
 [Jackson FasterXML Github Documentation](https://github.com/FasterXML/jackson-databind)
 
