@@ -4,24 +4,14 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
-/**
- * Main entry point for the electricity price analysis tool application.
- * Provides an interactive menu for analyzing electricity prices across Swedish regions.
- */
 public class Main {
-    /**
-     * Application entry point that runs an interactive menu for electricity price analysis.
-     * Allows users to select regions, view statistics, sort prices, and find optimal charging times.
-     *
-     * @param args command line arguments (not used)
-     */
+   
     public static void main(String[] args) {
 
         ElprisClient client = new ElprisClient();
         String valdeRegion = "";
         List<Elpris> timmaDataCache = null;
 
-        // välja ett giltigt område vid start
         while (!valdeRegion.matches("SE[1-4]")) {
             valdeRegion = IO.readln("""
                         
@@ -63,7 +53,6 @@ public class Main {
                 if ((val >= 2 && val <= 4) && timmaDataCache == null) {
                     System.out.println("Laddar ner dagens data för " + valdeRegion + "...");
                     try {
-                        // Hämtar dagens datum live
                         timmaDataCache = client.hamtaElprisLista(
                                 LocalDate.now(ZoneId.of("Europe/Stockholm")), valdeRegion);
                     } catch (ElprisNotFoundException e) {
@@ -89,18 +78,14 @@ public class Main {
                         break;
 
                     case 2:
-                        // Visar statistiken
                         client.visaDagligStatistik(timmaDataCache, valdeRegion);
                         break;
 
                     case 3:
-                        // Visar den sorterade listan
                         client.visaTimmarSorteradeEfterPris(timmaDataCache);
                         break;
 
                     case 4:
-
-                        // Visar det billigaste 4h-laddningsfönstret
                         client.visaBastaLaddningstid(timmaDataCache);
                         break;
 
