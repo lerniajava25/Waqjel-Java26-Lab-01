@@ -1,6 +1,7 @@
 package org.example;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 /**
@@ -63,7 +64,8 @@ public class Main {
                     System.out.println("Laddar ner dagens data för " + valdeRegion + "...");
                     try {
                         // Hämtar dagens datum live
-                        timmaDataCache = client.hamtaElprisLista(LocalDate.now(), valdeRegion);
+                        timmaDataCache = client.hamtaElprisLista(
+                                LocalDate.now(ZoneId.of("Europe/Stockholm")), valdeRegion);
                     } catch (ElprisNotFoundException e) {
                         System.out.println("Fel: " + e.getMessage());
                         continue;

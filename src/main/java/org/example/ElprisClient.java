@@ -23,6 +23,9 @@ import java.util.List;
  */
 public class ElprisClient {
 
+    private static final DateTimeFormatter TIME_WITH_OFFSET_FORMATTER =
+            DateTimeFormatter.ofPattern("HH:mmXXX");
+
     private final ObjectMapper objectMapper;
 
     /**
@@ -147,12 +150,12 @@ public class ElprisClient {
             }
         }
 
-        String timeStartStr = hourlyPrices.get(bastaStartTimmaIndex).timeStart();
-        int basta4hStartTid = ZonedDateTime.parse(timeStartStr).getHour();
+        String basta4hStartTid = ZonedDateTime.parse(hourlyPrices.get(bastaStartTimmaIndex).timeStart())
+                .format(TIME_WITH_OFFSET_FORMATTER);
         double best4HourAverageOre = (biligastFyraTimmarSumman / 4.0) * 100;
 
         System.out.println("\n*** Bästa laddningstid (4h sammanhängande) ***");
-        System.out.printf("Börja ladda kl: %02d:00%n", basta4hStartTid);
+        System.out.printf("Börja ladda kl: %s%n", basta4hStartTid);
         System.out.printf("Medelpris under laddning: %.2f öre/kWh%n", best4HourAverageOre);
     }
 
@@ -168,10 +171,10 @@ public class ElprisClient {
         sorteradeTimmar.sort(Comparator.comparingDouble(Elpris::sekPerKwh));
 
         for (Elpris currentHour : sorteradeTimmar) {
-            String timeStartStr = currentHour.timeStart();
-            int timma = ZonedDateTime.parse(timeStartStr).getHour();
+            String timeStart = ZonedDateTime.parse(currentHour.timeStart()).format(TIME_WITH_OFFSET_FORMATTER);
+            String timeEnd = ZonedDateTime.parse(currentHour.timeEnd()).format(TIME_WITH_OFFSET_FORMATTER);
             double priceInOre = currentHour.sekPerKwh() * 100;
-            System.out.printf("%02d:00-%02d:00: %.2f öre/kWh%n", timma, (timma + 1) % 24, priceInOre);
+            System.out.printf("%s-%s: %.2f öre/kWh%n", timeStart, timeEnd, priceInOre);
         }
     }
 }
