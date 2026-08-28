@@ -6,7 +6,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
-        //ElprisClient client = new ElprisClient();
+        ElprisClient client = new ElprisClient();
         String valdeRegion = "";
         List<Elpris> timmaDataCache = null;
 
@@ -44,8 +44,7 @@ public class Main {
                 System.out.println("Programmet avslutas.");
                 break;
             }
-            int val = Integer.parseInt(input);
-            /*
+
             try {
                 int val = Integer.parseInt(input);
 
@@ -64,7 +63,7 @@ public class Main {
                         continue;
                     }
                 }
-                */
+
                 switch (val) {
                     case 1:
                         String areaInput = IO.readln("Ange nytt elområde (SE1-SE4): ").trim().toUpperCase();
@@ -79,30 +78,28 @@ public class Main {
 
                     case 2:
                         // Visar statistiken
-                        System.out.println("2");
-                        //client.visaDagligStatistik(timmaDataCache, valdeRegion);
+                        client.visaDagligStatistik(timmaDataCache, valdeRegion);
                         break;
 
                     case 3:
-                        System.out.println("3");
                         // Visar den sorterade listan
-                        //client.visaTimmarSorteradeEfterPris(timmaDataCache);
+                        client.visaTimmarSorteradeEfterPris(timmaDataCache);
                         break;
 
                     case 4:
-                        System.out.println("4");
+
                         // Visar det billigaste 4h-laddningsfönstret
-                        //client.visaBastaLaddningstid(timmaDataCache);
+                        client.visaBastaLaddningstid(timmaDataCache);
                         break;
 
                     default:
                         System.out.println("Felaktigt val! Välj 1-4 eller e.");
                         break;
                 }
-            /*
+
             } catch (NumberFormatException e) {
                 System.out.println("Felaktig inmatning! Ange en siffra (1-4) eller 'e'.");
-            }*/
+            }
         }
     }
 }
